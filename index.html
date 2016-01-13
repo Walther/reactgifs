@@ -1,0 +1,58 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>ReactGIFs</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.6/react.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.6/react-dom.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/0.3.2/marked.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="http://walther.guru/style.css">
+  </head>
+  <body>
+    <div id="content"></div>
+    <script type="text/babel">
+
+      // Main container
+      var ImageBox = React.createClass({
+        render: function() {
+          return (
+            <div className="imagebox">
+              <h1>ReactGIFs</h1>
+              <ImageList />
+              <ImageForm />
+            </div>  
+            );
+        }
+      });
+
+      // Class for the list of images
+      var ImageList = React.createClass({
+        render: function() {
+          return (
+            <div className="imagelist">
+              Hello, world! I am an ImageList.
+            </div>
+          );
+        }
+      });
+
+      // Class for the image posting form
+      var ImageForm = React.createClass({
+        render: function() {
+          return (
+            <div className="imageform">
+              Hello, world! I am an ImageForm.
+            </div>
+          );
+        }
+      });
+
+      ReactDOM.render(
+        <ImageBox />,
+        document.getElementById('content'))
+    </script>
+  </body>
+</html>
