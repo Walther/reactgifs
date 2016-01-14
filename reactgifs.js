@@ -72,6 +72,7 @@ var ImageForm = React.createClass({
     this.setState({src: e.target.value});
   },
   handleSubmit: function(e) {
+    console.log("button clicked")
     e.preventDefault();
     var author = this.state.author.trim();
     var title = this.state.title.trim();
@@ -101,17 +102,17 @@ var ImageForm = React.createClass({
       data: JSON.stringify(obj),
       contentType: "application/json; charset=utf-8",
       dataType: "json",
-      success: function(data){alert(data);},
-          failure: function(errMsg) {
-              alert(errMsg);
-          }
+      success: function(msg, status, jqXHR) {
+        window.location.hash=msg;
+      },
+      failure: function(errMsg) {alert(errMsg);}
     });
 
-    this.setState(getInitialState());
+    this.setState(this.getInitialState());
   },
   render: function() {
     return (
-      <div className="imageForm" onSubmit={this.handleSubmit}>
+      <form className="imageForm" onSubmit={this.handleSubmit}>
         <input
           type="text"
           placeholder="Author"
@@ -141,7 +142,7 @@ var ImageForm = React.createClass({
         />
         <br/>
         <input type="submit" value="Post image" />
-      </div>
+      </form>
     );
   }
 });

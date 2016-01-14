@@ -33,7 +33,7 @@ app.post('/api', function (req, res) {
             if(err) {
                 return console.log(err);
             }
-            res.send(id)
+            res.send(JSON.stringify(id));
         });
     } else {
         res.sendStatus(400)
