@@ -56,10 +56,91 @@ var Post = React.createClass({
 
 // Class for the image posting form
 var ImageForm = React.createClass({
+  getInitialState: function() {
+    return {author: '', title: '', src: '', txt: ''};
+  },
+  handleAuthorChange: function(e) {
+    this.setState({author: e.target.value});
+  },
+  handleTitleChange: function(e) {
+    this.setState({title: e.target.value});
+  },
+  handleTxtChange: function(e) {
+    this.setState({txt: e.target.value});
+  },
+  handleSrcChange: function(e) {
+    this.setState({src: e.target.value});
+  },
+  handleSubmit: function(e) {
+    e.preventDefault();
+    var author = this.state.author.trim();
+    var title = this.state.title.trim();
+    var src = this.state.src.trim();
+    var txt = this.state.txt.trim();
+    if (!title || !author || !src || !txt ) {
+      console.log("something was empty")
+      return;
+    }
+
+    var obj = {
+      "command": "post",
+      "author": author,
+      "title": title,
+      "images": [
+        {
+          "src": src,
+          "txt": txt,
+          "alt": txt
+        }
+      ]
+    }
+
+    $.ajax({
+      type: "POST",
+      url: "/api",
+      data: JSON.stringify(obj),
+      contentType: "application/json; charset=utf-8",
+      dataType: "json",
+      success: function(data){alert(data);},
+          failure: function(errMsg) {
+              alert(errMsg);
+          }
+    });
+
+    this.setState(getInitialState());
+  },
   render: function() {
     return (
-      <div className="imageForm">
-        Placeholder - Image submit form here.
+      <div className="imageForm" onSubmit={this.handleSubmit}>
+        <input
+          type="text"
+          placeholder="Author"
+          value={this.state.author}
+          onChange={this.handleAuthorChange}
+        />
+        <br/>
+        <input
+          type="text"
+          placeholder="Title"
+          value={this.state.title}
+          onChange={this.handleTitleChange}
+        />
+        <br/>
+        <input
+          type="text"
+          placeholder="Source"
+          value={this.state.src}
+          onChange={this.handleSrcChange}
+        />
+        <br/>
+        <input
+          type="text"
+          placeholder="Caption"
+          value={this.state.txt}
+          onChange={this.handleTxtChange}
+        />
+        <br/>
+        <input type="submit" value="Post image" />
       </div>
     );
   }

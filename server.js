@@ -13,20 +13,31 @@ app.use( bodyParser.json() );
 
 
 app.post('/api', function (req, res) {
-    var content = req.body;
-    console.log(content);
+    var body = req.body;
+    console.log(body);
 
-    var id = shortid.generate();
-
-    filePath = __dirname + '/data/' + id;
-
-    fs.writeFile(filePath, JSON.stringify(content), function(err) {
-        if(err) {
-            return console.log(err);
+    if (body.command="post") {
+        // Creating a new post
+        var id = shortid.generate()
+        var content = {
+            "id": id,
+            "title": body.title,
+            "author": body.author,
+            "images": body.images,
+            "comments": []
         }
-            res.sendStatus(200)
-        });
 
+        filePath = __dirname + '/data/' + id;
+
+        fs.writeFile(filePath, JSON.stringify(content), function(err) {
+            if(err) {
+                return console.log(err);
+            }
+            res.send(id)
+        });
+    } else {
+        res.sendStatus(400)
+    }
 }); 
 
 app.listen(8080, function () {
