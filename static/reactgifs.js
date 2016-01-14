@@ -136,4 +136,6 @@ var Comment = React.createClass({
   }
 });
 
-ReactDOM.render(<MainBox url="/api/examplepost.json"/>, document.getElementById('content'))
+var apiurl = "/api" + window.location.pathname;
+
+ReactDOM.render(<MainBox url={apiurl}/>, document.getElementById('content'))

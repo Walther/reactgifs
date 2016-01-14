@@ -2,6 +2,8 @@
 
 var express = require('express');
 var app = express();
+var shortid = require('shortid');
+
 
 // Directory for static files served as-is
 app.use(express.static('static'));
