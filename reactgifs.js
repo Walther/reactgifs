@@ -13,8 +13,8 @@ Post                  // A post has one or more images and one commentbox
         Comment       // May have children
 */
 
-// Main container
-var MainBox = React.createClass({
+// Post has a title, one or more images with captions, and a comment box 
+var Post = React.createClass({
   getInitialState: function() {
     return {data: []};
   },
@@ -32,21 +32,9 @@ var MainBox = React.createClass({
     });
   },
   render: function() {
-    return (
-      <div className="mainBox">
-        <ImageForm />
-        <Post data={this.state.data}/>
-      </div>  
-      );
-  }
-});
-
-// Post has a title, one or more images with captions, and a comment box 
-var Post = React.createClass({
-  render: function() {
-    console.log(this.props.data.images)
-    if (this.props.data.images) {
-      var images = this.props.data.images.map(function(image) {
+    console.log(this.state.data.images)
+    if (this.state.data.images) {
+      var images = this.state.data.images.map(function(image) {
         return (
           <Image alt={image.alt} src={image.src} txt={image.txt} />
         )
@@ -57,10 +45,10 @@ var Post = React.createClass({
 
     return (
       <div className="post">
-        <h2>{this.props.data.title}</h2>
-        <p>posted by: {this.props.data.author} </p>
+        <h2>{this.state.data.title}</h2>
+        <p>posted by: {this.state.data.author} </p>
         {images}
-        <CommentList comments={this.props.data.comments} />
+        <CommentList comments={this.state.data.comments} />
       </div>
     );
   }
@@ -145,12 +133,13 @@ var main = function() {
       <div className="index">
         <h1>ReactGIFs</h1>
         <p>ReactGIFs is a React-based image sharing site.</p>
+        <ImageForm />
       </div>
       , document.getElementById('content'))
   }
   else {
     id = "api/" + id;
-    ReactDOM.render(<MainBox url={id}/>, document.getElementById('content'))
+    ReactDOM.render(<Post url={id}/>, document.getElementById('content'))
   }
 }
 
