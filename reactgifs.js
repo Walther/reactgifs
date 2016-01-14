@@ -136,22 +136,7 @@ var Comment = React.createClass({
   }
 });
 
-// Url parsing to get the post ID
-var parseQueryString = function() {
+var id = "api/" + window.location.hash.slice(1);
+console.log(id)
 
-    var str = window.location.search;
-    var objURL = {};
-
-    str.replace(
-        new RegExp( "([^?=&]+)(=([^&]*))?", "g" ),
-        function( $0, $1, $2, $3 ){
-            objURL[ $1 ] = $3;
-        }
-    );
-    return objURL;
-};
-
-var params = parseQueryString();
-var apiurl = "/api/" + params["url"];
-
-ReactDOM.render(<MainBox url={apiurl}/>, document.getElementById('content'))
+ReactDOM.render(<MainBox url={id}/>, document.getElementById('content'))
