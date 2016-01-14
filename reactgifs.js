@@ -34,8 +34,6 @@ var MainBox = React.createClass({
   render: function() {
     return (
       <div className="mainBox">
-        <h1>ReactGIFs</h1>
-        <p>ReactGIFs is a React-based image sharing site.</p>
         <ImageForm />
         <Post data={this.state.data}/>
       </div>  
@@ -136,7 +134,17 @@ var Comment = React.createClass({
   }
 });
 
-var id = "api/" + window.location.hash.slice(1);
-console.log(id)
-
-ReactDOM.render(<MainBox url={id}/>, document.getElementById('content'))
+var id = window.location.hash.slice(1);
+// Index page
+if (id.length === 0) {
+  ReactDOM.render(
+    <div className="index">
+      <h1>ReactGIFs</h1>
+      <p>ReactGIFs is a React-based image sharing site.</p>
+    </div>
+    , document.getElementById('content'))
+}
+else {
+  id = "api/" + id;
+  ReactDOM.render(<MainBox url={id}/>, document.getElementById('content'))
+}
