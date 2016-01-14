@@ -134,17 +134,30 @@ var Comment = React.createClass({
   }
 });
 
-var id = window.location.hash.slice(1);
-// Index page
-if (id.length === 0) {
-  ReactDOM.render(
-    <div className="index">
-      <h1>ReactGIFs</h1>
-      <p>ReactGIFs is a React-based image sharing site.</p>
-    </div>
-    , document.getElementById('content'))
+
+// Main render function;
+// serve either index page or the page content requested
+var main = function() {
+  var id = window.location.hash.slice(1);
+  // Index page
+  if (id.length === 0) {
+    ReactDOM.render(
+      <div className="index">
+        <h1>ReactGIFs</h1>
+        <p>ReactGIFs is a React-based image sharing site.</p>
+      </div>
+      , document.getElementById('content'))
+  }
+  else {
+    id = "api/" + id;
+    ReactDOM.render(<MainBox url={id}/>, document.getElementById('content'))
+  }
 }
-else {
-  id = "api/" + id;
-  ReactDOM.render(<MainBox url={id}/>, document.getElementById('content'))
-}
+
+// Run main at least once on initial load
+main();
+
+// Re-run main if the hash-url changes
+$(window).on('hashchange', function() {
+  main();
+})
