@@ -139,7 +139,7 @@ var main = function() {
       , document.getElementById('content'))
   }
   else {
-    id = "api/" + id;
+    id = "data/" + id;
     ReactDOM.render(<Post url={id}/>, document.getElementById('content'))
   }
 }
