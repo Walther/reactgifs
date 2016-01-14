@@ -136,4 +136,4 @@ var Comment = React.createClass({
   }
 });
 
-ReactDOM.render(<MainBox url="examplepost.json"/>, document.getElementById('content'))
+ReactDOM.render(<MainBox url="/api/examplepost.json"/>, document.getElementById('content'))
