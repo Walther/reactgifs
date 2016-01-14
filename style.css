@@ -56,11 +56,12 @@ h1, h2, h3, h4, h5, h6, a {
     font-family: "Open Sans", sans-serif;
     font-weight: 300;
     margin: 0;
-    color: #fff !important;
+    color: #fff;
 }
 
 h1 {
     font-size: 42px;
+    color: #fd971f;
 }
 
 h2 {
@@ -101,7 +102,7 @@ ul {
 figure {
     margin: 10px;
     padding: 10px;
-    background: #222;
+    background: #75715e;
     display: block;
     float: left;
     max-width: 90vw;
@@ -114,4 +115,18 @@ img {
 /* Always handy float-clearing magic box */
 .clear {
     clear: both;
+}
+
+input {
+    margin: 10px 0;
+    border: none;
+    background: #75715e;
+    padding: 10px 0;
+    font-size: 16pt;
+    color: #fff;
+    min-width: 350px;
+}
+
+button {
+
 }
