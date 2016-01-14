@@ -1,0 +1,117 @@
+/*
+    Looking at the source, are we?
+    Hand-baked by veeti "walther" haapsamo 2016
+*/
+
+/* fonts */
+
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:300italic,300,800);
+
+/* Color Scheme */
+.darkgrey   { color: #272822; }
+.black      { color: #101010; }
+.white      { color: #ffffff; }
+.grey       { color: #75715e; }
+.lightgrey  { color: #575855; }
+.pink       { color: #f92672; }
+.orange     { color: #fd971f; }
+.yellow     { color: #f6f080; }
+.green      { color: #a6e22e; }
+.blue       { color: #4eb4fa; }
+.purple     { color: #ae81ff; }
+
+/* begin elements */
+html {
+    height:100%;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    font-family: "Open Sans", sans-serif;
+    font-weight: 300;
+    min-width: 320px;
+    font-size: 15pt;
+    color: #fff;
+    background: #272822 !important;
+}
+
+#content,
+.content,
+#container,
+.container,
+th,
+td,
+p {
+    background: #272822;
+    color: #fff;
+    margin:10px 0;
+}
+
+body {
+    padding: 10px;
+}
+
+h1, h2, h3, h4, h5, h6, a {
+    font-family: "Open Sans", sans-serif;
+    font-weight: 300;
+    margin: 0;
+    color: #fff !important;
+}
+
+h1 {
+    font-size: 42px;
+}
+
+h2 {
+    font-size: 36px;
+    margin-top: 10px;
+    font-weight: 700;
+}
+
+em {
+    font-style: italic;
+}
+
+strong {
+    font-weight: 700;
+}
+
+a {
+    color: #4eb4fa !important;
+}
+
+a:active,
+a:visited {
+    color: #ae81ff !important;
+}
+
+::-moz-selection {
+    background: #fd971f;
+}
+
+::selection {
+    background: #fd971f;
+}
+
+ul {
+    list-style: disc;
+}
+
+figure {
+    margin: 10px;
+    padding: 10px;
+    background: #222;
+    display: block;
+    float: left;
+    max-width: 90vw;
+}
+
+img {
+    width: 100%;
+}
+
+/* Always handy float-clearing magic box */
+.clear {
+    clear: both;
+}

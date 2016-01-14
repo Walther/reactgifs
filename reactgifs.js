@@ -45,7 +45,7 @@ var Post = React.createClass({
 
     return (
       <div className="post">
-        <h2>{this.state.data.title}</h2>
+        <h1>{this.state.data.title}</h1>
         <p>posted by: {this.state.data.author} </p>
         {images}
         <CommentList comments={this.state.data.comments} />
@@ -91,7 +91,8 @@ var CommentList = React.createClass({
     });
     return (
       <div className="commentList">
-        <h3>Comments</h3>
+        <div className="clear"></div>
+        <h2>Comments</h2>
         {commentNodes}
         <CommentForm />
       </div>
