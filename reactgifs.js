@@ -4,44 +4,65 @@ Hierarchy plan:
 
 Mainbox
 ImageForm             // Submit new image
-ImageList             // List of images
-  ImageBox            // Container for individual "post"; img+comments
+Post                  // A post has one or more images and one commentbox
     Image             // Image itself
+    Image...
     CommentList       // List of the comments
       Comment         // Individual comment
-  ImageBox
-    Image
-    ...
-
+      Comment         // May have same-level comments
+        Comment       // May have children
 */
 
 // Main container
 var MainBox = React.createClass({
+  getInitialState: function() {
+    return {data: []};
+  },
+  componentDidMount: function() {
+    $.ajax({
+      url: this.props.url,
+      dataType: 'json',
+      cache: false,
+      success: function(data) {
+        this.setState({data: data});
+      }.bind(this),
+      error: function(xhr, status, err) {
+        console.error(this.props.url, status, err.toString());
+      }.bind(this)
+    });
+  },
   render: function() {
     return (
       <div className="mainBox">
         <h1>ReactGIFs</h1>
         <p>ReactGIFs is a React-based image sharing site.</p>
         <ImageForm />
-        <ImageList data={this.props.data}/>
+        <Post data={this.state.data}/>
       </div>  
       );
   }
 });
 
-// Class for the list of images
-var ImageList = React.createClass({
+// Post has a title, one or more images with captions, and a comment box 
+var Post = React.createClass({
   render: function() {
-    var imageNodes = this.props.data.map(function(image) {
+    console.log(this.props.data.images)
+    if (this.props.data.images) {
+      var images = this.props.data.images.map(function(image) {
+        return (
+          <Image alt={image.alt} src={image.src} txt={image.txt} />
+        )
+      })
+    } else {
+      return (<p>loading...</p>);
+    }
+
     return (
-      <ReactGIF author={image.author} key={image.id} alt= {image.alt} src={image.src} title={image.title} comments={image.comments}>
-      </ReactGIF>
-    );
-      
-    });
-    return (
-      <div className="imageList">
-        {imageNodes}
+      <div className="post">
+        <h2>{this.props.data.title}</h2>
+        <p>posted by: {this.props.data.author} </p>
+        {images}
+        <CommentList comments={this.props.data.comments} />
       </div>
     );
   }
@@ -59,15 +80,13 @@ var ImageForm = React.createClass({
 });
 
 // Individual image object
-var ReactGIF = React.createClass({
+var Image = React.createClass({
   render: function() {
     return (
-      <div className="image">
-        <h2 className="imageTitle"> {this.props.title} </h2>
-        <p>Posted by: {this.props.author}</p>
+      <figure className="image">
         <img alt={this.props.alt} src={this.props.src} />
-        <CommentList comments={this.props.comments} />
-      </div>
+        <figcaption>{this.props.txt}</figcaption>
+      </figure>
     );
   }
 });
@@ -117,16 +136,4 @@ var Comment = React.createClass({
   }
 });
 
-
-var data = [
-  {id: 1, title: "imagetitle", author: "imageauthor", src: "", alt: "foo",
-  comments: [
-    {id: 2, author: "Person 1", text: "This is one comment"},
-    {id: 3, author: "Person 2", text: "This is *another* comment"}
-    ]
-  }
-];
-
-ReactDOM.render(
-  <MainBox data={data}/>,
-  document.getElementById('content'))
+ReactDOM.render(<MainBox url="examplepost.json"/>, document.getElementById('content'))

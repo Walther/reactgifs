@@ -1,0 +1,21 @@
+{
+"id": 1,
+"title": "albumtitle",
+"author": "imageauthor",
+"images":[
+        {
+            "src": "",
+            "alt": "foo",
+            "txt": "caption"
+        },
+        {
+            "src": "",
+            "alt": "foo",
+            "txt": "caption2"
+        }
+    ],
+"comments": [
+        {"id": 12, "author": "Person 1", "text": "This is one comment"},
+        {"id": 13, "author": "Person 2", "text": "This is *another* comment"}
+    ]
+}
