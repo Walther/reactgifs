@@ -10,12 +10,6 @@ app.use(express.static('static'));
 app.use(express.static('api'));
 
 
-// Default root to index page
-app.get('/', function (req, res, next) {
-    app.get(/static/index.html);
-})
-
-
 // Static file handling
 app.get('/static/:name', function (req, res, next) {
 
@@ -49,7 +43,8 @@ app.get('/api/:name', function (req, res, next) {
     dotfiles: 'deny',
     headers: {
         'x-timestamp': Date.now(),
-        'x-sent': true
+        'x-sent': true,
+        'Content-type': "application/json"
     }
   };
 
@@ -67,7 +62,10 @@ app.get('/api/:name', function (req, res, next) {
 })
 
 
-
+// If no catches, default to index page
+app.get('*', function (req, res, next) {
+    app.get(/static/index.html);
+})
 
 
 
