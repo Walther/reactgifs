@@ -183,11 +183,65 @@ var CommentList = React.createClass({
 });
 
 var CommentForm = React.createClass({
+  getInitialState: function() {
+    return {author: '', text: ''};
+  },
+  handleAuthorChange: function(e) {
+    this.setState({author: e.target.value});
+  },
+  handleTextChange: function(e) {
+    this.setState({text: e.target.value});
+  },
+  handleSubmit: function(e) {
+    console.log("button clicked")
+    e.preventDefault();
+    var author = this.state.author.trim();
+    var text = this.state.text.trim();
+    if (!author || !text ) {
+      console.log("something was empty")
+      return;
+    }
+
+    var obj = {
+      "command": "comment",
+      "author": author,
+      "text": text,
+      "imageid": window.location.hash.slice(1)
+    }
+
+    $.ajax({
+      type: "POST",
+      url: "/api",
+      data: JSON.stringify(obj),
+      contentType: "application/json; charset=utf-8",
+      dataType: "json",
+      success: function(msg, status, jqXHR) {
+        window.location.reload();
+      },
+      failure: function(errMsg) {alert(errMsg);}
+    });
+
+    this.setState(this.getInitialState());
+  },
   render: function() {
     return (
-      <div className="commentForm">
-        Placeholder - Comment submit form here.
-      </div>
+      <form className="commentForm" onSubmit={this.handleSubmit}>
+        <input
+          type="text"
+          placeholder="Name"
+          value={this.state.author}
+          onChange={this.handleAuthorChange}
+        />
+        <br />
+        <input
+          type="text"
+          placeholder="Text"
+          value={this.state.text}
+          onChange={this.handleTextChange}
+        />
+        <br/>
+        <input type="submit" value="Submit comment" />
+      </form>
     );
   }
 });
