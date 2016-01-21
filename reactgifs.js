@@ -13,7 +13,7 @@ Post                  // A post has one or more images and one commentbox
         Comment       // May have children
 */
 
-// Post has a title, one or more images with captions, and a comment box 
+// Post has a title, one or more images with captions, and a comment box
 var Post = React.createClass({
   getInitialState: function() {
     return {data: []};
@@ -54,91 +54,47 @@ var Post = React.createClass({
   }
 });
 
+// Image submit
+var submitImages = function(event) {
+  event.preventDefault();
+  var data = new FormData();
+  jQuery.each(jQuery('#file')[0].files, function(i, file) {
+      data.append('file-'+i, file);
+  });
+  $.ajax({
+      url: '/upload',
+      data: data,
+      cache: false,
+      contentType: false,
+      processData: false,
+      type: 'POST',
+      success: function(data){
+          window.location.hash=data;
+      }
+  });
+}
+
 // Class for the image posting form
 var ImageForm = React.createClass({
-  getInitialState: function() {
-    return {author: '', title: '', src: '', txt: ''};
-  },
-  handleAuthorChange: function(e) {
-    this.setState({author: e.target.value});
-  },
-  handleTitleChange: function(e) {
-    this.setState({title: e.target.value});
-  },
-  handleTxtChange: function(e) {
-    this.setState({txt: e.target.value});
-  },
-  handleSrcChange: function(e) {
-    this.setState({src: e.target.value});
-  },
-  handleSubmit: function(e) {
-    console.log("button clicked")
-    e.preventDefault();
-    var author = this.state.author.trim();
-    var title = this.state.title.trim();
-    var src = this.state.src.trim();
-    var txt = this.state.txt.trim();
-    if (!title || !author || !src || !txt ) {
-      console.log("something was empty")
-      return;
-    }
-
-    var obj = {
-      "command": "post",
-      "author": author,
-      "title": title,
-      "images": [
-        {
-          "src": src,
-          "txt": txt,
-          "alt": txt
-        }
-      ]
-    }
-
-    $.ajax({
-      type: "POST",
-      url: "/api",
-      data: JSON.stringify(obj),
-      contentType: "application/json; charset=utf-8",
-      dataType: "json",
-      success: function(msg, status, jqXHR) {
-        window.location.hash=msg;
-      },
-      failure: function(errMsg) {alert(errMsg);}
-    });
-
-    this.setState(this.getInitialState());
-  },
   render: function() {
     return (
-      <form className="imageForm" onSubmit={this.handleSubmit}>
+      <form className="imageForm" enctype="multipart/form-data" onSubmit={submitImages}>
+        <input type="hidden" name="command" value="post" />
         <input
           type="text"
           placeholder="Author"
-          value={this.state.author}
-          onChange={this.handleAuthorChange}
         />
         <br/>
         <input
           type="text"
           placeholder="Title"
-          value={this.state.title}
-          onChange={this.handleTitleChange}
         />
         <br/>
-        <input
-          type="text"
-          placeholder="Source"
-          value={this.state.src}
-          onChange={this.handleSrcChange}
-        />
+        <input id="file" type="file" name="file" multiple="multiple" />
         <br/>
         <input
           type="text"
           placeholder="Caption"
-          value={this.state.txt}
-          onChange={this.handleTxtChange}
         />
         <br/>
         <input type="submit" value="Post image" />
