@@ -14,11 +14,16 @@ app.use( bodyParser.json() );
 
 app.post('/upload', function (req, res) {
   // Creating a new post
-  console.log("Creating new post")
+  console.log("Creating new post");
   var id = shortid.generate();
+  var title = "";
+  var author = "";
   var count = 0;
+  var images = [];
   var form = new multiparty.Form();
-  form.uploadDir = __dirname + "/tmp"
+  form.autoFiles = true;
+  form.uploadDir = __dirname + "/tmp/";
+
   form.on('error', function(err) {
     console.log('Error parsing form: ' + err.stack);
   });
@@ -33,45 +38,59 @@ app.post('/upload', function (req, res) {
       part.resume();
     }
 
+
     part.on('error', function(err) {
-      console.log("error:" + err)
+      console.log("error:" + err);
     });
   });
 
   form.on('file', function(name, file) {
-    console.log("Saving file " + id)
-    var tmp_path = file.path
+    console.log("Saving file " + id);
+    var tmp_path = file.path;
     var target_path = __dirname + '/images/' + id;
 
     fs.rename(tmp_path, target_path, function(err) {
         if(err) console.error(err.stack);
+    })
+
+    // Image file written. Write metadata
+
+    var imgObj = {
+      "src": "/images/" + id,
+      "alt": "alt text",
+      "txt": "caption"
+    }
+    images.push(imgObj);
+    console.log("Images: " + images)
+
+
+    console.log("Writing metadata");
+    var content = {
+      "id": id,
+      "title": title,
+      "author": author,
+      "images": images,
+      "comments": []
+    };
+
+    filePath = __dirname + '/data/' + id;
+
+    fs.writeFile(filePath, JSON.stringify(content), function(err) {
+      if(err) {
+        return console.log(err);
+      }
+      res.send(id);
     });
-  })
+  });
 
   // Close emitted after form parsed
   form.on('close', function() {
     console.log('Upload completed!');
   });
 
-  // Image file written. Write metadata
-
-  var content = {
-    "id": id,
-    "title": title,
-    "author": author,
-    "images": images,
-    "comments": []
-  }
-
-  filePath = __dirname + '/data/' + id;
-
-  fs.writeFile(filePath, JSON.stringify(content), function(err) {
-    if(err) {
-      return console.log(err);
-    }
-    res.send(id);
-  });
-})
+  // Call the parser
+  form.parse(req);
+});
 
 app.post('/api', function (req, res) {
   var body = req.body;
@@ -87,12 +106,12 @@ app.post('/api', function (req, res) {
       "id": commentID,
       "author": body.author,
       "text": body.text,
-    }
+    };
 
     fs.readFile(imagePath, 'utf8', function (err,data) {
       if (err) {
         return console.log(err);
-      }
+      };
 
       var temp = JSON.parse(data);
 
@@ -101,9 +120,9 @@ app.post('/api', function (req, res) {
       fs.writeFile(imagePath, JSON.stringify(temp), function(err) {
         if(err) {
           return console.log(err);
-        }
-        res.send(commentID);
+        };
       });
+      res.sendStatus(200);
     })
   }
 
@@ -115,4 +134,4 @@ app.post('/api', function (req, res) {
 
 app.listen(8080, function () {
   console.log('Running ReactGIFs on port 8080!');
-})
+});

@@ -58,7 +58,7 @@ var Post = React.createClass({
 var submitImages = function(event) {
   event.preventDefault();
   var data = new FormData();
-  jQuery.each(jQuery('#file')[0].files, function(i, file) {
+  $.each(jQuery('#file')[0].files, function(i, file) {
       data.append('file-'+i, file);
   });
   $.ajax({
@@ -78,15 +78,17 @@ var submitImages = function(event) {
 var ImageForm = React.createClass({
   render: function() {
     return (
-      <form className="imageForm" enctype="multipart/form-data" onSubmit={submitImages}>
+      <form className="imageForm" encType="multipart/form-data" onSubmit={submitImages}>
         <input type="hidden" name="command" value="post" />
         <input
           type="text"
+          name="author"
           placeholder="Author"
         />
         <br/>
         <input
           type="text"
+          name="title"
           placeholder="Title"
         />
         <br/>
@@ -94,6 +96,7 @@ var ImageForm = React.createClass({
         <br/>
         <input
           type="text"
+          name="caption"
           placeholder="Caption"
         />
         <br/>
@@ -172,7 +175,7 @@ var CommentForm = React.createClass({
       contentType: "application/json; charset=utf-8",
       dataType: "json",
       success: function(msg, status, jqXHR) {
-        window.location.reload();
+        window.location.reload(true);
       },
       failure: function(errMsg) {alert(errMsg);}
     });
