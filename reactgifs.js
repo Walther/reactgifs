@@ -116,7 +116,7 @@ var ImageForm = React.createClass({
           onChange={this.handleTitleChange}
         />
         <br/>
-        <input id="file" type="file" name="file" multiple="multiple" />
+        <input id="file" type="file" name="file" />
         <br/>
         <input
           type="text"
