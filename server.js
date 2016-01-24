@@ -29,19 +29,21 @@ app.post('/upload', function (req, res) {
   });
 
   // Parts are emitted when parsing the form
-  form.on('part', function(part) {
-
-    if (!part.filename) {
-      // filename is not defined when this is a field and not a file
-      console.log('got field named ' + part.name);
-      // ignore field's content
-      part.resume();
-    }
-
-
-    part.on('error', function(err) {
-      console.log("error:" + err);
-    });
+  form.on('field', function(name, value) {
+    console.log("Got field: " + name + "=" + value);
+      switch (name) {
+        case "title":
+          title = value;
+          break;
+        case "author":
+          author = value;
+          break;
+        case "caption":
+          caption = value;
+          break;
+        default:
+          console.log("unknown field: " + value)
+      }
   });
 
   form.on('file', function(name, file) {
@@ -51,36 +53,37 @@ app.post('/upload', function (req, res) {
 
     fs.rename(tmp_path, target_path, function(err) {
         if(err) console.error(err.stack);
+        // Image file written. Write metadata
+
+        var imgObj = {
+          "src": "/images/" + id,
+          "alt": caption,
+          "txt": caption
+        }
+        images.push(imgObj);
+        console.log("Images: " + images)
+
+
+        console.log("Writing metadata");
+        var content = {
+          "id": id,
+          "title": title,
+          "author": author,
+          "images": images,
+          "comments": []
+        };
+
+        filePath = __dirname + '/data/' + id;
+
+        fs.writeFile(filePath, JSON.stringify(content), function(err) {
+          if(err) {
+            return console.log(err);
+          }
+          res.send(id);
+        });
     })
 
-    // Image file written. Write metadata
 
-    var imgObj = {
-      "src": "/images/" + id,
-      "alt": "alt text",
-      "txt": "caption"
-    }
-    images.push(imgObj);
-    console.log("Images: " + images)
-
-
-    console.log("Writing metadata");
-    var content = {
-      "id": id,
-      "title": title,
-      "author": author,
-      "images": images,
-      "comments": []
-    };
-
-    filePath = __dirname + '/data/' + id;
-
-    fs.writeFile(filePath, JSON.stringify(content), function(err) {
-      if(err) {
-        return console.log(err);
-      }
-      res.send(id);
-    });
   });
 
   // Close emitted after form parsed

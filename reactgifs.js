@@ -52,52 +52,77 @@ var Post = React.createClass({
       </div>
     );
   }
-});
-
-// Image submit
-var submitImages = function(event) {
-  event.preventDefault();
-  var data = new FormData();
-  $.each(jQuery('#file')[0].files, function(i, file) {
-      data.append('file-'+i, file);
-  });
-  $.ajax({
-      url: '/upload',
-      data: data,
-      cache: false,
-      contentType: false,
-      processData: false,
-      type: 'POST',
-      success: function(data){
-          window.location.hash=data;
-      }
-  });
-}
+})
 
 // Class for the image posting form
 var ImageForm = React.createClass({
+  getInitialState: function() {
+    return {author: '', title: '', caption: ''};
+  },
+  handleAuthorChange: function(e) {
+    this.setState({author: e.target.value});
+  },
+  handleTitleChange: function(e) {
+    this.setState({title: e.target.value});
+  },
+  handleCaptionChange: function(e) {
+    this.setState({caption: e.target.value});
+  },
+  handleSubmit: function(e) {
+    e.preventDefault();
+    var author = this.state.author.trim();
+    var title = this.state.title.trim();
+    var caption = this.state.caption.trim();
+    if (!author || !title || !caption ) {
+      console.log("something was empty")
+      return;
+    }
+
+    var data = new FormData();
+    data.append("author", author);
+    data.append("title", title);
+    data.append("caption", caption);
+    $.each(jQuery('#file')[0].files, function(i, file) {
+        data.append('file-'+i, file);
+    });
+    $.ajax({
+        url: '/upload',
+        data: data,
+        cache: false,
+        contentType: false,
+        processData: false,
+        type: 'POST',
+        success: function(data){
+            window.location.hash=data;
+        }
+    });
+  },
+
   render: function() {
     return (
-      <form className="imageForm" encType="multipart/form-data" onSubmit={submitImages}>
+      <form className="imageForm" encType="multipart/form-data" onSubmit={this.handleSubmit}>
         <input type="hidden" name="command" value="post" />
         <input
           type="text"
-          name="author"
           placeholder="Author"
+          value={this.state.author}
+          onChange={this.handleAuthorChange}
         />
         <br/>
         <input
           type="text"
-          name="title"
           placeholder="Title"
+          value={this.state.title}
+          onChange={this.handleTitleChange}
         />
         <br/>
         <input id="file" type="file" name="file" multiple="multiple" />
         <br/>
         <input
           type="text"
-          name="caption"
           placeholder="Caption"
+          value={this.state.caption}
+          onChange={this.handleCaptionChange}
         />
         <br/>
         <input type="submit" value="Post image" />
