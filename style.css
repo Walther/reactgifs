@@ -121,12 +121,12 @@ input {
     margin: 10px 0;
     border: none;
     background: #75715e;
-    padding: 10px 0;
+    padding: 10px;
     font-size: 16pt;
     color: #fff;
-    min-width: 350px;
+    width: 350px;
 }
 
-button {
-
+.button {
+  width: auto;
 }

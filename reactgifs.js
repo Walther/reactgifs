@@ -125,7 +125,7 @@ var ImageForm = React.createClass({
           onChange={this.handleCaptionChange}
         />
         <br/>
-        <input type="submit" value="Post image" />
+        <input type="submit" value="Post image" className="button"/>
       </form>
     );
   }
@@ -224,7 +224,7 @@ var CommentForm = React.createClass({
           onChange={this.handleTextChange}
         />
         <br/>
-        <input type="submit" value="Submit comment" />
+        <input className="button" type="submit" value="Submit comment" />
       </form>
     );
   }
