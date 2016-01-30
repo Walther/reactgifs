@@ -58,7 +58,7 @@ var ImageForm = React.createClass({
   },
   handleSubmit: function(e) {
     e.preventDefault();
-    var author = this.state.profile.nickname;
+    var author = this.props.profile.nickname;
     var title = this.state.title.trim();
     var caption = this.state.caption.trim();
     if (!title || !caption ) {
