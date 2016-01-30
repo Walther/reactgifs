@@ -14,7 +14,7 @@ React-based image sharing site
 - [x] Support for uploading an image post with single image
 - [x] Support for separate post metadata and image storage
 - [x] Support for posting comments on an image post
-- [ ] Ensure RESTful API
+- [ ] Ensure the API is RESTful
 - [ ] Support for submitting multiple images within same post
 - [ ] Support for comments of comments; comment-tree
 - [ ] Automated testing
@@ -25,4 +25,7 @@ React-based image sharing site
 - [ ] User accounts
   - [ ] Post & comment deletion
   - [x] Registration / login
-- Thorough analysis & mitigation of possible security vulnerabilities
+  - [ ] Make sure all providers work
+  - [ ] Clean up the hash-url after initial login
+  - [ ] User profiles
+- Thorough analysis & mitigation of possible security vulnerabilities!
