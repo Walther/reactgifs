@@ -18,7 +18,9 @@
   "homepage": "https://github.com/Walther/reactgifs#readme",
   "dependencies": {
     "body-parser": "^1.14.2",
+    "dotenv": "^2.0.0",
     "express": "^4.13.3",
+    "express-jwt": "^3.3.0",
     "multiparty": "^4.1.2",
     "shortid": "^2.2.4"
   }

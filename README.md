@@ -24,4 +24,5 @@ React-based image sharing site
   - [ ] Next / previous post
 - [ ] User accounts
   - [ ] Post & comment deletion
-  - [ ] Registration
+  - [x] Registration / login
+- Thorough analysis & mitigation of possible security vulnerabilities

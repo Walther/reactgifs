@@ -1,17 +1,6 @@
-/*
+// ReactGIFs - React-based image sharing platform
+// veeti "walther" haapsamo 2016
 
-Hierarchy plan:
-
-Mainbox
-ImageForm             // Submit new image
-Post                  // A post has one or more images and one commentbox
-    Image             // Image itself
-    Image...
-    CommentList       // List of the comments
-      Comment         // Individual comment
-      Comment         // May have same-level comments
-        Comment       // May have children
-*/
 
 // Post has a title, one or more images with captions, and a comment box
 var Post = React.createClass({
@@ -19,11 +8,13 @@ var Post = React.createClass({
     return {data: []};
   },
   componentDidMount: function() {
+    console.log("Post debug: url = " + this.props.url);
     $.ajax({
       url: this.props.url,
       dataType: 'json',
       cache: false,
       success: function(data) {
+        console.log("Post debug: data = " + JSON.stringify(data));
         this.setState({data: data});
       }.bind(this),
       error: function(xhr, status, err) {
@@ -32,7 +23,7 @@ var Post = React.createClass({
     });
   },
   render: function() {
-    console.log(this.state.data.images)
+    console.log("Post debug: Images: " + this.state.data.images);
     if (this.state.data.images) {
       var images = this.state.data.images.map(function(image) {
         return (
@@ -85,16 +76,23 @@ var ImageForm = React.createClass({
     $.each(jQuery('#file')[0].files, function(i, file) {
         data.append('file-'+i, file);
     });
-    $.ajax({
-        url: '/upload',
-        data: data,
-        cache: false,
-        contentType: false,
-        processData: false,
-        type: 'POST',
-        success: function(data){
-            window.location.hash=data;
-        }
+
+    var form = document.querySelector('form')
+    var postImages = fetch('/upload', {
+      body: data,
+      headers: {
+        'Authorization': 'Bearer ' + localStorage.getItem('userToken')
+      },
+      method: 'POST',
+      cache: false,
+    });
+
+    postImages.then(function (response) {
+      response.json().then(function (data) {
+        console.log("Data response: " + data)
+        window.location.pathname=data;
+      });
+
     });
   },
 
@@ -190,9 +188,21 @@ var CommentForm = React.createClass({
       "command": "comment",
       "author": author,
       "text": text,
-      "imageid": window.location.hash.slice(1)
+      "imageid": location.pathname.slice(1)
     }
 
+    var postImages = fetch('/api', {
+      body: JSON.stringify(obj),
+      headers: {
+        'Authorization': 'Bearer ' + localStorage.getItem('userToken'),
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      method: 'POST',
+      cache: false,
+    });
+
+    /* Old ajax version
     $.ajax({
       type: "POST",
       url: "/api",
@@ -204,8 +214,9 @@ var CommentForm = React.createClass({
       },
       failure: function(errMsg) {alert(errMsg);}
     });
-
+    */
     this.setState(this.getInitialState());
+    location.reload();
   },
   render: function() {
     return (
@@ -243,31 +254,114 @@ var Comment = React.createClass({
   }
 });
 
+// Login box
+var LoginBox = React.createClass({
+  showLock: function() {
+    // We receive lock from the parent component in this case
+    // If you instantiate it in this component, just do this.lock.show()
+    this.props.lock.show();
+  },
+
+  render: function() {
+    return (
+    <div className="login-box">
+      <a onClick={this.showLock}>Sign In</a>
+    </div>);
+  }
+});
+
+
+// Initial user profile stuff
+var Profile = React.createClass({
+  getInitialState: function() {
+    return {
+      profile: null
+    }
+  },
+
+  componentDidMount: function() {
+    // In this case, the lock and token are retrieved from the parent component
+    // If these are available locally, use `this.lock` and `this.idToken`
+    this.props.lock.getProfile(this.props.idToken, function (err, profile) {
+      if (err) {
+        console.log("Error loading the Profile", err);
+        return;
+      }
+      this.setState({profile: profile});
+    }.bind(this));
+  },
+
+  render: function() {
+    if (this.state.profile) {
+      return (
+        <p>Logged in as {this.state.profile.nickname}</p>
+      );
+    } else {
+      return (
+        <p>Loading profile</p>
+      );
+    }
+  }
+});
 
 // Main render function;
 // serve either index page or the page content requested
-var main = function() {
-  var id = window.location.hash.slice(1);
-  // Index page
-  if (id.length === 0) {
-    ReactDOM.render(
-      <div className="index">
-        <h1>ReactGIFs</h1>
-        <p>ReactGIFs is a React-based image sharing site.</p>
-        <ImageForm />
-      </div>
-      , document.getElementById('content'))
+var Main = React.createClass({
+  // Instantiate idToken / auth0
+  componentWillMount: function() {
+    this.lock = new Auth0Lock('N1zyz6FaQspe9Z0bX9QrUPMbp5rWEidR', 'reactgifs.eu.auth0.com');
+    this.setState({idToken: this.getIdToken()})
+  },
+  getIdToken: function() {
+    var idToken = localStorage.getItem('userToken');
+    var authHash = this.lock.parseHash(window.location.hash);
+    if (!idToken && authHash) {
+      if (authHash.id_token) {
+        idToken = authHash.id_token
+        localStorage.setItem('userToken', authHash.id_token);
+      }
+      if (authHash.error) {
+        console.log("Error signing in", authHash);
+        return null;
+      }
+    }
+    return idToken;
+  },
+  render: function() {
+    var pageId = window.location.pathname.slice(1);
+    console.log("current page id: " + pageId);
+    // Index page
+    if (pageId.length === 0) {
+      // Logged in, show submit form
+      if (this.state.idToken) {
+        return(
+          <div className="index">
+            <h1>ReactGIFs</h1>
+            <p>ReactGIFs is a React-based image sharing site.</p>
+            <Profile idToken={this.state.idToken} lock={this.lock}/>
+            <ImageForm />
+          </div>
+        );
+        }
+      // Not logged in, show login form
+      else {
+        return(
+          <div className="index">
+            <h1>ReactGIFs</h1>
+            <p>ReactGIFs is a React-based image sharing site.</p>
+            <LoginBox lock={this.lock}/>
+          </div>
+        );
+      }
+    }
+    else {
+      // Image post page, show post + comments
+      pageId = "data/" + pageId;
+      return(<Post url={pageId}/>);
+      // TODO: show CommentForm only if logged in
+    }
   }
-  else {
-    id = "data/" + id;
-    ReactDOM.render(<Post url={id}/>, document.getElementById('content'))
-  }
-}
+})
 
 // Run main at least once on initial load
-main();
-
-// Re-run main if the hash-url changes
-$(window).on('hashchange', function() {
-  main();
-})
+ReactDOM.render(<Main />, document.getElementById('content'));
