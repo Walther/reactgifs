@@ -39,7 +39,7 @@ var Post = React.createClass({
         <h1>{this.state.data.title}</h1>
         <p>posted by: {this.state.data.author} </p>
         {images}
-        <CommentList comments={this.state.data.comments} />
+        <CommentList comments={this.state.data.comments} profile={this.props.profile} />
       </div>
     );
   }
@@ -48,10 +48,7 @@ var Post = React.createClass({
 // Class for the image posting form
 var ImageForm = React.createClass({
   getInitialState: function() {
-    return {author: '', title: '', caption: ''};
-  },
-  handleAuthorChange: function(e) {
-    this.setState({author: e.target.value});
+    return {title: '', caption: '', profile: this.props.profile};
   },
   handleTitleChange: function(e) {
     this.setState({title: e.target.value});
@@ -61,10 +58,10 @@ var ImageForm = React.createClass({
   },
   handleSubmit: function(e) {
     e.preventDefault();
-    var author = this.state.author.trim();
+    var author = this.state.profile.nickname;
     var title = this.state.title.trim();
     var caption = this.state.caption.trim();
-    if (!author || !title || !caption ) {
+    if (!title || !caption ) {
       console.log("something was empty")
       return;
     }
@@ -97,35 +94,36 @@ var ImageForm = React.createClass({
   },
 
   render: function() {
-    return (
-      <form className="imageForm" encType="multipart/form-data" onSubmit={this.handleSubmit}>
-        <input type="hidden" name="command" value="post" />
-        <input
-          type="text"
-          placeholder="Author"
-          value={this.state.author}
-          onChange={this.handleAuthorChange}
-        />
-        <br/>
-        <input
-          type="text"
-          placeholder="Title"
-          value={this.state.title}
-          onChange={this.handleTitleChange}
-        />
-        <br/>
-        <input id="file" type="file" name="file" />
-        <br/>
-        <input
-          type="text"
-          placeholder="Caption"
-          value={this.state.caption}
-          onChange={this.handleCaptionChange}
-        />
-        <br/>
-        <input type="submit" value="Post image" className="button"/>
-      </form>
-    );
+    if (this.props.profile) {
+      return (
+        <form className="imageForm" encType="multipart/form-data" onSubmit={this.handleSubmit}>
+          <input type="hidden" name="command" value="post" />
+          <br/>
+          <p>Logged in and posting as: {this.props.profile.nickname}</p>
+          <input
+            type="text"
+            placeholder="Title"
+            value={this.state.title}
+            onChange={this.handleTitleChange}
+          />
+          <br/>
+          <input id="file" type="file" name="file" />
+          <br/>
+          <input
+            type="text"
+            placeholder="Caption"
+            value={this.state.caption}
+            onChange={this.handleCaptionChange}
+          />
+          <br/>
+          <input type="submit" value="Post image" className="button"/>
+        </form>
+      );
+    } else {
+      return (
+        <p>Loading profile data</p>
+      );
+    }
   }
 });
 
@@ -153,14 +151,27 @@ var CommentList = React.createClass({
       </Comment>
     )
     });
-    return (
-      <div className="commentList">
+    if (this.props.profile) {
+      return (
+        <div className="commentList">
         <div className="clear"></div>
         <h2>Comments</h2>
         {commentNodes}
-        <CommentForm />
-      </div>
-    );
+        <CommentForm profile={this.props.profile}/>
+        </div>
+      )
+    } else {
+        return (
+        <div className="commentList">
+        <div className="clear"></div>
+        <h2>Comments</h2>
+        {commentNodes}
+        <div className="login-box">
+          <a onClick={this.showLock}>Sign in to comment</a>
+        </div>
+        </div>
+      )
+    }
   }
 });
 
@@ -177,7 +188,7 @@ var CommentForm = React.createClass({
   handleSubmit: function(e) {
     console.log("button clicked")
     e.preventDefault();
-    var author = this.state.author.trim();
+    var author = this.props.profile.nickname;
     var text = this.state.text.trim();
     if (!author || !text ) {
       console.log("something was empty")
@@ -202,32 +213,13 @@ var CommentForm = React.createClass({
       cache: false,
     });
 
-    /* Old ajax version
-    $.ajax({
-      type: "POST",
-      url: "/api",
-      data: JSON.stringify(obj),
-      contentType: "application/json; charset=utf-8",
-      dataType: "json",
-      success: function(msg, status, jqXHR) {
-        window.location.reload(true);
-      },
-      failure: function(errMsg) {alert(errMsg);}
-    });
-    */
     this.setState(this.getInitialState());
     location.reload();
   },
   render: function() {
     return (
       <form className="commentForm" onSubmit={this.handleSubmit}>
-        <input
-          type="text"
-          placeholder="Name"
-          value={this.state.author}
-          onChange={this.handleAuthorChange}
-        />
-        <br />
+        <p>Posting comment as {this.props.profile.nickname}</p>
         <input
           type="text"
           placeholder="Text"
@@ -265,42 +257,8 @@ var LoginBox = React.createClass({
   render: function() {
     return (
     <div className="login-box">
-      <a onClick={this.showLock}>Sign In</a>
+      <a onClick={this.showLock}>Sign in to post</a>
     </div>);
-  }
-});
-
-
-// Initial user profile stuff
-var Profile = React.createClass({
-  getInitialState: function() {
-    return {
-      profile: null
-    }
-  },
-
-  componentDidMount: function() {
-    // In this case, the lock and token are retrieved from the parent component
-    // If these are available locally, use `this.lock` and `this.idToken`
-    this.props.lock.getProfile(this.props.idToken, function (err, profile) {
-      if (err) {
-        console.log("Error loading the Profile", err);
-        return;
-      }
-      this.setState({profile: profile});
-    }.bind(this));
-  },
-
-  render: function() {
-    if (this.state.profile) {
-      return (
-        <p>Logged in as {this.state.profile.nickname}</p>
-      );
-    } else {
-      return (
-        <p>Loading profile</p>
-      );
-    }
   }
 });
 
@@ -308,9 +266,22 @@ var Profile = React.createClass({
 // serve either index page or the page content requested
 var Main = React.createClass({
   // Instantiate idToken / auth0
+  getInitialState: function() {
+    return {profile: null};
+  },
   componentWillMount: function() {
     this.lock = new Auth0Lock('N1zyz6FaQspe9Z0bX9QrUPMbp5rWEidR', 'reactgifs.eu.auth0.com');
-    this.setState({idToken: this.getIdToken()})
+    this.setState({idToken: this.getIdToken()});
+  },
+  componentDidMount: function() {
+    this.lock.getProfile(this.state.idToken, function (err, profile) {
+      if (err) {
+        console.log("Error loading the Profile", err);
+        return;
+      }
+      this.setState({profile: profile});
+      console.log("Profile: " + profile)
+    }.bind(this));
   },
   getIdToken: function() {
     var idToken = localStorage.getItem('userToken');
@@ -338,8 +309,7 @@ var Main = React.createClass({
           <div className="index">
             <h1>ReactGIFs</h1>
             <p>ReactGIFs is a React-based image sharing site.</p>
-            <Profile idToken={this.state.idToken} lock={this.lock}/>
-            <ImageForm />
+            <ImageForm profile={this.state.profile}/>
           </div>
         );
         }
@@ -357,8 +327,7 @@ var Main = React.createClass({
     else {
       // Image post page, show post + comments
       pageId = "data/" + pageId;
-      return(<Post url={pageId}/>);
-      // TODO: show CommentForm only if logged in
+      return(<Post url={pageId} profile={this.state.profile}/>);
     }
   }
 })
