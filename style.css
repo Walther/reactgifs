@@ -130,3 +130,7 @@ input {
 .button {
   width: auto;
 }
+
+.commentAuthor {
+  margin-right: 10px;
+}
