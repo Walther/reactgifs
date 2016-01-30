@@ -41,6 +41,7 @@ app.post('/upload', function (req, res) {
   var form = new multiparty.Form();
   form.autoFiles = true;
   form.uploadDir = TMPDIR;
+  form.maxFilesSize = 2000*1024;
 
   form.on('error', function(err) {
     console.log('Error parsing form: ' + err.stack);
