@@ -23,6 +23,7 @@ app.use( bodyParser.json() );
 var TMPDIR  = __dirname + "/tmp/";
 var IMGDIR  = __dirname + '/images/';
 var METADIR = __dirname + '/data/';
+var PORT = process.env.PORT;
 
 // Secure post urls
 app.use('/api', auth);
@@ -155,6 +156,6 @@ app.get('*', function(req, res) {
   res.sendFile(__dirname + '/index.html');
 });
 
-app.listen(8080, function () {
-  console.log('Running ReactGIFs on port 8080!');
+app.listen(PORT, function () {
+  console.log('Running ReactGIFs on port ' + PORT);
 });
