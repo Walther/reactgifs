@@ -31,10 +31,10 @@ var PORT = process.env.PORT;
 app.use('/api', auth);
 app.use('/upload', auth);
 
-// Upload handling for a Post
+// Upload handling for a Gallery
 app.post('/upload', function (req, res) {
-  // Creating a new post
-  console.log("Creating new post");
+  // Creating a new Gallery
+  console.log("Creating new Gallery");
   var id = shortid.generate();
   var title = "";
   var author = "";
@@ -106,7 +106,7 @@ app.post('/upload', function (req, res) {
 
           filePath = METADIR + id;
 
-          console.log("Created post:" + JSON.stringify(content));
+          console.log("Created Gallery:" + JSON.stringify(content));
 
           fs.writeFile(filePath, JSON.stringify(content), function(err) {
             if(err) {
@@ -139,7 +139,7 @@ app.post('/api', function (req, res) {
   console.log(body);
 
   if (body.command==="comment") {
-    // Creating a comment to an existing post
+    // Creating a comment to an existing Gallery
     console.log("Creating new comment")
     imageid = body.imageid;
     imagePath = METADIR + imageid;
