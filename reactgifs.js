@@ -2,13 +2,13 @@
 // veeti "walther" haapsamo 2016
 
 
-// Post has a title, one or more images with captions, and a comment box
-var Post = React.createClass({
+// Gallery has a title, one or more images with captions, and a comment box
+var Gallery = React.createClass({
   getInitialState: function() {
     return {data: []};
   },
   componentDidMount: function() {
-    console.log("Post debug: url = " + this.props.url);
+    console.log("Gallery debug: url = " + this.props.url);
     var page = this;
     var loadPage = fetch(page.props.url)
     .then(function (response) {
@@ -20,7 +20,7 @@ var Post = React.createClass({
     });
   },
   render: function() {
-    console.log("Post debug: Images: " + this.state.data.images);
+    console.log("Gallery debug: Images: " + this.state.data.images);
     if (this.state.data.images) {
       var images = this.state.data.images.map(function(image) {
         return (
@@ -32,7 +32,7 @@ var Post = React.createClass({
     }
 
     return (
-      <div className="post">
+      <div className="gallery">
         <h1>{this.state.data.title}</h1>
         <p>posted by: {this.state.data.author} </p>
         {images}
@@ -327,7 +327,7 @@ var Main = React.createClass({
     else {
       // Image post page, show post + comments
       pageId = "data/" + pageId;
-      return(<Post url={pageId} profile={this.state.profile}/>);
+      return(<Gallery url={pageId} profile={this.state.profile}/>);
     }
   }
 })
