@@ -194,7 +194,7 @@ var CommentForm = React.createClass({
       return;
     }
 
-    var obj = {
+    var commentObject = {
       "command": "comment",
       "author": author,
       "text": text,
@@ -202,7 +202,7 @@ var CommentForm = React.createClass({
     }
 
     var postImages = fetch('/api', {
-      body: JSON.stringify(obj),
+      body: JSON.stringify(commentObject),
       headers: {
         'Authorization': 'Bearer ' + localStorage.getItem('userToken'),
         'Accept': 'application/json',
