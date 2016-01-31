@@ -8,6 +8,8 @@ var multiparty = require('multiparty');
 var fs         = require('fs');
 var jwt        = require('express-jwt');
 var dotenv     = require('dotenv');
+var filetype   = require('file-type');
+var readChunk  = require('read-chunk');
 
 // inits
 var app        = express();
@@ -70,39 +72,56 @@ app.post('/upload', function (req, res) {
     var tmp_path = file.path;
     var target_path = IMGDIR + id;
 
-    fs.rename(tmp_path, target_path, function(err) {
-        if(err) console.error(err.stack);
-        // Image file written. Write metadata
+    // Check file type against whitelist
+    var type = '';
+    fs.readFile(tmp_path, function (err,data) {
+      if (err) {
+        return console.log(err);
+      };
+      type = filetype(data);
+      console.log(type);
 
-        var imgObj = {
-          "src": "/images/" + id,
-          "alt": caption,
-          "txt": caption
-        }
-        images.push(imgObj);
+      if (type && type.ext.match(/png|jpg|jpeg|gif|gifv|webp/)) {
+        //TODO: Add mimetype checking
+        console.log("filetype matched whitelist")
+        fs.rename(tmp_path, target_path, function(err) {
+          if(err) console.error(err.stack);
+          // Image file written. Write metadata
 
-        console.log("Writing metadata");
-        var content = {
-          "id": id,
-          "title": title,
-          "author": author,
-          "images": images,
-          "comments": []
-        };
-
-        filePath = METADIR + id;
-
-        console.log("Created post:" + JSON.stringify(content));
-
-        fs.writeFile(filePath, JSON.stringify(content), function(err) {
-          if(err) {
-            return console.log(err);
+          var imgObj = {
+            "src": "/images/" + id,
+            "alt": caption,
+            "txt": caption
           }
-          res.send(JSON.stringify(id));
-        });
-    })
+          images.push(imgObj);
 
+          console.log("Writing metadata");
+          var content = {
+            "id": id,
+            "title": title,
+            "author": author,
+            "images": images,
+            "comments": []
+          };
 
+          filePath = METADIR + id;
+
+          console.log("Created post:" + JSON.stringify(content));
+
+          fs.writeFile(filePath, JSON.stringify(content), function(err) {
+            if(err) {
+              return console.log(err);
+            }
+            res.send(JSON.stringify(id));
+          });
+        })
+      }
+      // If the file didn't match whitelist, remove tempfile
+      else {
+        fs.unlink(tmp_path)
+      }
+
+    });
   });
 
   // Close emitted after form parsed

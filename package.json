@@ -21,7 +21,9 @@
     "dotenv": "^2.0.0",
     "express": "^4.13.3",
     "express-jwt": "^3.3.0",
+    "file-type": "^3.6.0",
     "multiparty": "^4.1.2",
+    "read-chunk": "^1.0.1",
     "shortid": "^2.2.4"
   }
 }
