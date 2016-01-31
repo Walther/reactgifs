@@ -80,8 +80,7 @@ var ImageForm = React.createClass({
       headers: {
         'Authorization': 'Bearer ' + localStorage.getItem('userToken')
       },
-      method: 'POST',
-      cache: false,
+      method: 'POST'
     });
 
     postImages.then(function (response) {
@@ -209,8 +208,7 @@ var CommentForm = React.createClass({
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
-      method: 'POST',
-      cache: false,
+      method: 'POST'
     });
 
     this.setState(this.getInitialState());
