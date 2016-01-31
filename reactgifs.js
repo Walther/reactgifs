@@ -37,7 +37,8 @@ var Gallery = React.createClass({
         <h1>{this.state.data.title}</h1>
         <p>posted by: {this.state.data.author} </p>
         {images}
-        <CommentList comments={this.state.data.comments} profile={this.props.profile} />
+        <div className="clear"></div>
+        <CommentList comments={this.state.data.comments} profile={this.props.profile} lock={this.props.lock}/>
       </div>
     );
   }
@@ -156,7 +157,9 @@ var CommentList = React.createClass({
         <div className="clear"></div>
         <h2>Comments</h2>
         {commentNodes}
+        <div className="clear"></div>
         <CommentForm profile={this.props.profile}/>
+        <LogoutBox />
         </div>
       )
     } else {
@@ -165,9 +168,8 @@ var CommentList = React.createClass({
         <div className="clear"></div>
         <h2>Comments</h2>
         {commentNodes}
-        <div className="login-box">
-          <button onClick={this.showLock}>Sign in to comment</button>
-        </div>
+        <div className="clear"></div>
+        <LoginBox lock={this.props.lock}/>
         </div>
       )
     }
@@ -255,7 +257,22 @@ var LoginBox = React.createClass({
   render: function() {
     return (
     <div className="login-box">
-      <buttton className="button" onClick={this.showLock}>Sign in to post</buttton>
+      <button className="button" onClick={this.showLock}>Sign in to post</button>
+    </div>);
+  }
+});
+
+// Logout box
+var LogoutBox = React.createClass({
+  logout: function() {
+    localStorage.removeItem("userToken");
+    window.location="https://reactgifs.eu.auth0.com/v2/logout"
+  },
+
+  render: function() {
+    return (
+    <div className="logout-box">
+      <button className="button" onClick={this.logout}>Log out</button>
     </div>);
   }
 });
@@ -311,6 +328,7 @@ var Main = React.createClass({
             <p>Kindly note the 2MB image size limit.</p>
             <p>Allowed filetypes: png|jpg|jpeg|gif|mp4|webp</p>
             <ImageForm profile={this.state.profile}/>
+            <LogoutBox />
           </div>
         );
         }
@@ -328,7 +346,7 @@ var Main = React.createClass({
     else {
       // Image post page, show post + comments
       pageId = "data/" + pageId;
-      return(<Gallery url={pageId} profile={this.state.profile}/>);
+      return(<Gallery url={pageId} profile={this.state.profile} lock={this.lock}/>);
     }
   }
 })
