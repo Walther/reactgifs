@@ -308,6 +308,7 @@ var Main = React.createClass({
             <h1>ReactGIFs</h1>
             <p>ReactGIFs is a React-based image sharing site.</p>
             <p>Kindly note the 2MB image size limit.</p>
+            <p>Allowed filetypes: png|jpg|jpeg|gif|mp4|webp</p>
             <ImageForm profile={this.state.profile}/>
           </div>
         );
