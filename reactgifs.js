@@ -12,10 +12,11 @@ var Gallery = React.createClass({
     var page = this;
     var loadPage = fetch(page.props.url)
     .then(function (response) {
+      console.debug("Debug: response: " + JSON.stringify(response))
       return response.json()
     })
     .then(function (data) {
-      console.debug("Data response: " + data)
+      console.debug("Debug: Data: " + data)
       page.setState({data: data})
     });
   },
@@ -28,7 +29,7 @@ var Gallery = React.createClass({
         )
       })
     } else {
-      return (<p>loading...</p>);
+      return (<p>still loading or 404 not found</p>);
     }
 
     return (
