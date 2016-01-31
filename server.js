@@ -92,6 +92,8 @@ app.post('/upload', function (req, res) {
 
         filePath = METADIR + id;
 
+        console.log("Created post:" + JSON.stringify(content));
+
         fs.writeFile(filePath, JSON.stringify(content), function(err) {
           if(err) {
             return console.log(err);
