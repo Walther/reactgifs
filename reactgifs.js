@@ -8,19 +8,19 @@ var Gallery = React.createClass({
     return {data: []};
   },
   componentDidMount: function() {
-    console.log("Gallery debug: url = " + this.props.url);
+    console.debug("Gallery debug: url = " + this.props.url);
     var page = this;
     var loadPage = fetch(page.props.url)
     .then(function (response) {
       return response.json()
     })
     .then(function (data) {
-      console.log("Data response: " + data)
+      console.debug("Data response: " + data)
       page.setState({data: data})
     });
   },
   render: function() {
-    console.log("Gallery debug: Images: " + this.state.data.images);
+    console.debug("Gallery debug: Images: " + this.state.data.images);
     if (this.state.data.images) {
       var images = this.state.data.images.map(function(image) {
         return (
@@ -299,7 +299,7 @@ var Main = React.createClass({
   },
   render: function() {
     var pageId = window.location.pathname.slice(1);
-    console.log("current page id: " + pageId);
+    console.debug("Gallery debug: page id: " + pageId);
     // Index page
     if (pageId.length === 0) {
       // Logged in, show submit form
