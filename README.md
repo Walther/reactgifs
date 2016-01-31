@@ -26,6 +26,6 @@ React-based image sharing site
   - [ ] Post & comment deletion
   - [x] Registration / login
   - [ ] Make sure all providers work
-  - [ ] Clean up the hash-url after initial login
+  - [x] Clean up the hash-url after initial login
   - [ ] User profiles
 - Thorough analysis & mitigation of possible security vulnerabilities!

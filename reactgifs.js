@@ -290,6 +290,7 @@ var Main = React.createClass({
       if (authHash.id_token) {
         idToken = authHash.id_token
         localStorage.setItem('userToken', authHash.id_token);
+        window.location.hash = '';
       }
       if (authHash.error) {
         console.log("Error signing in", authHash);
