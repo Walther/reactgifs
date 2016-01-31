@@ -29,3 +29,4 @@ React-based image sharing site
   - [x] Clean up the hash-url after initial login
   - [ ] User profiles
 - Thorough analysis & mitigation of possible security vulnerabilities!
+  - [x] Primitive filetype checking
