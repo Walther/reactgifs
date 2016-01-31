@@ -81,8 +81,9 @@ app.post('/upload', function (req, res) {
       type = filetype(data);
       console.log(type);
 
-      if (type && type.ext.match(/png|jpg|jpeg|gif|gifv|webp/)) {
-        //TODO: Add mimetype checking
+      var whitelist = /png|jpg|jpeg|gif|gifv|webp/;
+
+      if (type && type.ext.match(whitelist) && type.mime.match(whitelist)) {
         console.log("filetype matched whitelist")
         fs.rename(tmp_path, target_path, function(err) {
           if(err) console.error(err.stack);
