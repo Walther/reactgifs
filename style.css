@@ -118,7 +118,7 @@ img {
 }
 
 input, button, .button {
-    margin: 10px 0;
+    margin: 10px;
     border: none;
     background: #75715e;
     padding: 10px;
