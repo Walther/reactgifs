@@ -9,17 +9,14 @@ var Post = React.createClass({
   },
   componentDidMount: function() {
     console.log("Post debug: url = " + this.props.url);
-    $.ajax({
-      url: this.props.url,
-      dataType: 'json',
-      cache: false,
-      success: function(data) {
-        console.log("Post debug: data = " + JSON.stringify(data));
-        this.setState({data: data});
-      }.bind(this),
-      error: function(xhr, status, err) {
-        console.error(this.props.url, status, err.toString());
-      }.bind(this)
+    var page = this;
+    var loadPage = fetch(page.props.url)
+    .then(function (response) {
+      return response.json()
+    })
+    .then(function (data) {
+      console.log("Data response: " + data)
+      page.setState({data: data})
     });
   },
   render: function() {
@@ -70,9 +67,12 @@ var ImageForm = React.createClass({
     data.append("author", author);
     data.append("title", title);
     data.append("caption", caption);
-    $.each(jQuery('#file')[0].files, function(i, file) {
-        data.append('file-'+i, file);
-    });
+    var files = document.querySelector('#file').files;
+    var i=0;
+    for (var file in files) {
+      data.append('file-'+i, files[file]);
+      i++;
+    }
 
     var form = document.querySelector('form')
     var postImages = fetch('/upload', {
