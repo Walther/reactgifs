@@ -1,7 +1,7 @@
 // ReactGIFs - React-based image sharing platform
 // veeti "walther" haapsamo 2016
 
-
+// a Gallery is a page with its own url; a post submitted by a user.
 // Gallery has a title, one or more images with captions, and a comment box
 var Gallery = React.createClass({
   getInitialState: function() {
@@ -140,15 +140,14 @@ var Image = React.createClass({
 
 
 // Comments
-
 var CommentList = React.createClass({
   render: function() {
     var commentNodes = this.props.comments.map(function(comment) {
-    return (
-      <Comment author={comment.author} key={comment.id}>
-        {comment.text}
-      </Comment>
-    )
+      return (
+        <Comment author={comment.author} key={comment.id}>
+          {comment.text}
+        </Comment>
+      )
     });
     if (this.props.profile) {
       return (
