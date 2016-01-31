@@ -167,7 +167,7 @@ var CommentList = React.createClass({
         <h2>Comments</h2>
         {commentNodes}
         <div className="login-box">
-          <a onClick={this.showLock}>Sign in to comment</a>
+          <button onClick={this.showLock}>Sign in to comment</button>
         </div>
         </div>
       )
@@ -257,7 +257,7 @@ var LoginBox = React.createClass({
   render: function() {
     return (
     <div className="login-box">
-      <a onClick={this.showLock}>Sign in to post</a>
+      <buttton className="button" onClick={this.showLock}>Sign in to post</buttton>
     </div>);
   }
 });
@@ -310,6 +310,7 @@ var Main = React.createClass({
           <div className="index">
             <h1>ReactGIFs</h1>
             <p>ReactGIFs is a React-based image sharing site.</p>
+            <p>Kindly note the 2MB image size limit.</p>
             <ImageForm profile={this.state.profile}/>
           </div>
         );

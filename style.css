@@ -117,7 +117,7 @@ img {
     clear: both;
 }
 
-input {
+input, button, .button {
     margin: 10px 0;
     border: none;
     background: #75715e;
@@ -127,8 +127,10 @@ input {
     width: 350px;
 }
 
-.button {
+.button, button {
   width: auto;
+  cursor: pointer;
+  cursor: hand;
 }
 
 .commentAuthor {
