@@ -27,7 +27,7 @@ var Post = React.createClass({
     if (this.state.data.images) {
       var images = this.state.data.images.map(function(image) {
         return (
-          <Image alt={image.alt} src={image.src} txt={image.txt} />
+          <Image alt={image.alt} src={image.src} txt={image.txt} key={image.src} />
         )
       })
     } else {
