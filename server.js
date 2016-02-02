@@ -94,7 +94,6 @@ app.post('/upload', function (req, res) {
 
           var imgObj = {
             "src": "/images/" + id,
-            "alt": caption,
             "txt": caption
           }
           images.push(imgObj);
@@ -154,13 +153,13 @@ app.post('/api', function (req, res) {
       "text": body.text,
     };
 
+    // Append to existing comment list in metadata
     fs.readFile(imagePath, 'utf8', function (err,data) {
       if (err) {
         return console.log(err);
       };
 
       var temp = JSON.parse(data);
-
       temp["comments"].push(content);
 
       fs.writeFile(imagePath, JSON.stringify(temp), function(err) {

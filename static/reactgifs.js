@@ -30,7 +30,7 @@ var Gallery = React.createClass({
     if (this.state.data.images) {
       var images = this.state.data.images.map(function(image) {
         return (
-          <Image alt={image.alt} src={image.src} txt={image.txt} key={image.src} />
+          <Image src={image.src} txt={image.txt} key={image.src} />
         )
       })
     }
@@ -147,7 +147,7 @@ var Image = React.createClass({
   render: function() {
     return (
       <figure className="image">
-        <img alt={this.props.alt} src={this.props.src} />
+        <img alt={this.props.txt} title={this.props.txt} src={this.props.src} />
         <figcaption>{this.props.txt}</figcaption>
       </figure>
     );
