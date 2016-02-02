@@ -265,7 +265,13 @@ var LoginBox = React.createClass({
   showLock: function() {
     // We receive lock from the parent component in this case
     // If you instantiate it in this component, just do this.lock.show()
-    this.props.lock.show();
+    this.props.lock.show({
+      callbackURL: "http://" + location.host,
+      responseType: 'token',
+      authParams: {
+        state: location.pathname.slice(1)
+      }
+    });
   },
 
   render: function() {
@@ -280,7 +286,7 @@ var LoginBox = React.createClass({
 var LogoutBox = React.createClass({
   logout: function() {
     localStorage.removeItem("userToken");
-    window.location="https://reactgifs.eu.auth0.com/v2/logout"
+    location.reload();
   },
 
   render: function() {
@@ -300,7 +306,8 @@ var Main = React.createClass({
   },
   componentWillMount: function() {
     this.lock = new Auth0Lock('N1zyz6FaQspe9Z0bX9QrUPMbp5rWEidR', 'reactgifs.eu.auth0.com');
-    this.setState({idToken: this.getIdToken()});
+    this.setState({idToken: this.getIdToken(), url: this.getPrevUrl()});
+    this.clearUrlHash();
   },
   componentDidMount: function() {
     this.lock.getProfile(this.state.idToken, function (err, profile) {
@@ -319,7 +326,6 @@ var Main = React.createClass({
       if (authHash.id_token) {
         idToken = authHash.id_token
         localStorage.setItem('userToken', authHash.id_token);
-        window.location.hash = '';
       }
       if (authHash.error) {
         console.log("Error signing in", authHash);
@@ -327,6 +333,15 @@ var Main = React.createClass({
       }
     }
     return idToken;
+  },
+  getPrevUrl: function() {
+    var authHash = this.lock.parseHash(window.location.hash);
+    if (authHash && authHash.state) {
+      location.pathname = authHash.state;
+    }
+  },
+  clearUrlHash: function() {
+    window.location.hash = '';
   },
   render: function() {
     var pageId = window.location.pathname.slice(1);

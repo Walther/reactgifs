@@ -29,6 +29,6 @@ React-based image sharing site
   - [ ] Make sure all providers work
   - [x] Clean up the hash-url after initial login
   - [ ] User profiles
-  - [ ] Fix login button on gallery pages / not-frontpage
+  - [x] Fix login button on gallery pages / not-frontpage
 - Thorough analysis & mitigation of possible security vulnerabilities!
   - [x] Primitive filetype checking
