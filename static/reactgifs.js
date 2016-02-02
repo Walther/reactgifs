@@ -12,13 +12,18 @@ var Gallery = React.createClass({
     var page = this;
     var loadPage = fetch(page.props.url)
     .then(function (response) {
-      console.debug("Debug: response: " + JSON.stringify(response))
-      return response.json()
+      // Fail if response !== 200
+      if (response.status !== 200) {
+        page.setState({error: response.status});
+        console.debug("Debug: response: " + JSON.stringify(response.status));
+        return;
+      }
+
+      response.json().then(function (data) {
+        console.debug("Debug: Data: " + data)
+        page.setState({data: data})
+      });
     })
-    .then(function (data) {
-      console.debug("Debug: Data: " + data)
-      page.setState({data: data})
-    });
   },
   render: function() {
     console.debug("Gallery debug: Images: " + this.state.data.images);
@@ -28,8 +33,17 @@ var Gallery = React.createClass({
           <Image alt={image.alt} src={image.src} txt={image.txt} key={image.src} />
         )
       })
-    } else {
-      return (<p>still loading or 404 not found</p>);
+    }
+
+    else if (this.state.error) {
+      return (
+        <p>Error: {this.state.error}</p>
+      )
+    }
+
+    else {
+      return (
+        <p>loading...</p>);
     }
 
     return (

@@ -22,7 +22,7 @@ React-based image sharing site
 - [ ] Improved UX
   - [ ] Most popular images on frontpage
   - [ ] Next / previous post
-  - [ ] 404 on not data not found
+  - [x] 404 on not data not found
 - [ ] User accounts
   - [ ] Post & comment deletion
   - [x] Registration / login

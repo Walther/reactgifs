@@ -20,7 +20,6 @@ var auth       = jwt({
 });
 
 // settings
-app.use(express.static('.'));
 app.use( bodyParser.json() );
 var TMPDIR  = __dirname + "/tmp/";
 var IMGDIR  = __dirname + '/images/';
@@ -175,10 +174,28 @@ app.post('/api', function (req, res) {
   }
 });
 
-app.get('*', function(req, res) {
-  res.sendFile(__dirname + '/index.html');
+
+// Explicitly defined static serves
+app.get('/static/:file', function(req, res) {
+  res.sendFile(__dirname + '/static/' + req.params.file);
 });
 
+app.get('/data/:file', function(req, res) {
+  res.sendFile(__dirname + '/data/' + req.params.file);
+});
+
+app.get('/images/:file', function(req, res) {
+  res.sendFile(__dirname + '/images/' + req.params.file);
+});
+
+
+// Catch-all - render the "single-page app"
+app.get('*', function(req, res) {
+  res.sendFile(__dirname + '/static/index.html');
+});
+
+
+// Start server!
 app.listen(PORT, function () {
   console.log('Running ReactGIFs on port ' + PORT);
 });
