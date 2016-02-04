@@ -20,3 +20,12 @@ describe('http get /', function () {
     });
   });
 });
+
+describe('http get /data/nonexistent_url', function () {
+  it('should return 404', function (done) {
+    http.get('http://localhost:8080/data/nonexistent_url', function (res) {
+      assert.equal(404, res.statusCode);
+      done();
+    });
+  });
+});
