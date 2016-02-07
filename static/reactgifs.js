@@ -112,8 +112,8 @@ var ImageForm = React.createClass({
     if (this.props.profile) {
       return (
         <form className="imageForm" encType="multipart/form-data" onSubmit={this.handleSubmit}>
+          <h2>Add an image</h2>
           <input type="hidden" name="command" value="post" />
-          <br/>
           <p>Logged in and posting as: {this.props.profile.nickname}</p>
           <input
             type="text"

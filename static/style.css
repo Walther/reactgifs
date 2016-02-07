@@ -62,12 +62,13 @@ h1, h2, h3, h4, h5, h6, a {
 h1 {
     font-size: 42px;
     color: #fd971f;
+    font-weight: 700;
 }
 
 h2 {
-    font-size: 36px;
-    margin-top: 10px;
-    font-weight: 700;
+    font-size: 38px;
+    margin-top: 40px;
+    color: #a6e22e;
 }
 
 em {
@@ -137,4 +138,10 @@ input, button, .button {
 
 .commentAuthor {
   margin-right: 10px;
+}
+
+.imageForm .button,
+.commentForm .button {
+  background: #a6e22e !important;
+  color: #272822;
 }
