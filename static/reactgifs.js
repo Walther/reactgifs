@@ -136,7 +136,7 @@ var ImageForm = React.createClass({
       );
     } else {
       return (
-        <p>Loading profile data</p>
+        <p>Loading profile data... If problem persists, try to log out and log in again.</p>
       );
     }
   }
