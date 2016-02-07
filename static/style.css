@@ -137,7 +137,9 @@ input, button, .button, textarea {
     font-size: 16pt;
     color: #fff;
     min-width: 350px;
-    width: 90%;
+    width: -moz-calc(100% - 20px);
+    width: -webkit-calc(100% - 20px);
+    width: calc(100% - 20px);
     border-radius: 5px;
     box-sizing: border-box;
     -moz-box-sizing: border-box;
@@ -165,7 +167,9 @@ input, button, .button, textarea {
 
 @media all and (max-width: 800px) {
   input, button, .button, textarea {
-    width: 90%;
+    width: -moz-calc(100% - 20px);
+    width: -webkit-calc(100% - 20px);
+    width: calc(100% - 20px);
     margin: 10px;
     padding: 10px;
     min-width: 200px;
