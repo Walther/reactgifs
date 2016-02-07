@@ -84,10 +84,9 @@ var ImageForm = React.createClass({
     data.append("title", title);
     data.append("caption", caption);
     var files = document.querySelector('#file').files;
-    var i=0;
-    for (var file in files) {
-      data.append('file-'+i, files[file]);
-      i++;
+    for (var i=0; i < files.length; i++) {
+      console.debug("files[i] = " + files[i]);
+      data.append('file-'+i, files[i]);
     }
 
     var form = document.querySelector('form')
