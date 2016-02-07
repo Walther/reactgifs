@@ -48,6 +48,11 @@ p {
     margin:10px 0;
 }
 
+#content {
+  margin: 0 auto;
+  max-width: 900px;
+}
+
 body {
     padding: 10px;
 }
