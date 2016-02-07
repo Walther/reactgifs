@@ -112,7 +112,7 @@ var ImageForm = React.createClass({
     if (this.props.profile) {
       return (
         <form className="imageForm" encType="multipart/form-data" onSubmit={this.handleSubmit}>
-          <h2>Add an image</h2>
+          <h2>Post an image</h2>
           <input type="hidden" name="command" value="post" />
           <p>Logged in and posting as: {this.props.profile.nickname}</p>
           <input
@@ -234,9 +234,10 @@ var CommentForm = React.createClass({
     return (
       <form className="commentForm" onSubmit={this.handleSubmit}>
         <p>Posting comment as {this.props.profile.nickname}</p>
-        <input
+        <textarea
           type="text"
           placeholder="Text"
+          className="commentTextInput"
           value={this.state.text}
           onChange={this.handleTextChange}
         />

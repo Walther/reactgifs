@@ -124,14 +124,15 @@ img {
     clear: both;
 }
 
-input, button, .button {
+input, button, .button, textarea {
     margin: 10px;
     border: none;
     background: #75715e;
     padding: 10px;
     font-size: 16pt;
     color: #fff;
-    width: 350px;
+    min-width: 350px;
+    width: 90%;
     border-radius: 5px;
 }
 
@@ -149,4 +150,8 @@ input, button, .button {
 .commentForm .button {
   background: #a6e22e !important;
   color: #272822;
+}
+
+.commentTextInput {
+  resize:vertical;
 }
