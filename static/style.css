@@ -134,6 +134,8 @@ input, button, .button, textarea {
     min-width: 350px;
     width: 90%;
     border-radius: 5px;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
 }
 
 .button, button {
@@ -154,4 +156,13 @@ input, button, .button, textarea {
 
 .commentTextInput {
   resize:vertical;
+}
+
+@media all and (max-width: 800px) {
+  input, button, .button, textarea {
+    width: 90%;
+    margin: 10px;
+    padding: 10px;
+    min-width: 200px;
+  }
 }
