@@ -162,6 +162,7 @@ var CommentList = React.createClass({
       return (
         <Comment author={comment.author} key={comment.id}>
           {comment.text}
+          <hr />
         </Comment>
       )
     });

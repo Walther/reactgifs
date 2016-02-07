@@ -105,6 +105,11 @@ ul {
     list-style: disc;
 }
 
+hr {
+    border: none;
+    border-top: 1px solid #75715e;
+}
+
 figure {
     margin: 10px;
     padding: 10px;
