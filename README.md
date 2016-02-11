@@ -1,6 +1,6 @@
 # ReactGIFS
 
-React-based image sharing site.
+React-based image sharing site with Node.js back end.
 
 Looks great on desktop browsers:
 
