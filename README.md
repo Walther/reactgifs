@@ -2,6 +2,11 @@
 
 React-based image sharing site
 
+![Index page, not logged in](screenshots/2016-02-11-132620_1920x1080_scrot.png)
+![Index page, login box](screenshots/2016-02-11-132625_1920x1080_scrot.png)
+![Index page, logged in, submit form](screenshots/2016-02-11-132703_1920x1080_scrot.png)
+![Gallery page with a submitted image](screenshots/2016-02-11-132731_1920x1080_scrot.png)
+![Gallery page with example comment](screenshots/2016-02-11-132812_1920x1080_scrot.png)
 ## Usage
 
 - `npm install`
