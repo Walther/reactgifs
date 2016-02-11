@@ -13,22 +13,25 @@ var readChunk  = require('read-chunk');
 
 // inits
 var app        = express();
-dotenv.load();
-var auth       = jwt({
-  secret: new Buffer(process.env.AUTH0_CLIENT_SECRET, 'base64'),
-  audience: process.env.AUTH0_CLIENT_ID
-});
+var prod       = true; // "production" has a .env file with auth0 details and custom port
 
-// settings
+if (prod) {
+  dotenv.load();
+  var requireAuth = jwt({
+    secret: new Buffer(process.env.AUTH0_CLIENT_SECRET, 'base64'),
+    audience: process.env.AUTH0_CLIENT_ID
+  });
+  // Secure post urls
+  app.use('/api', requireAuth);
+  app.use('/upload', requireAuth);
+}
+
 app.use( bodyParser.json() );
 var TMPDIR  = __dirname + "/tmp/";
 var IMGDIR  = __dirname + '/images/';
 var METADIR = __dirname + '/data/';
-var PORT = process.env.PORT;
+var PORT = process.env.PORT || 8080;
 
-// Secure post urls
-app.use('/api', auth);
-app.use('/upload', auth);
 
 // Upload handling for a Gallery
 app.post('/upload', function (req, res) {

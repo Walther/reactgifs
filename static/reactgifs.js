@@ -1,6 +1,17 @@
 // ReactGIFs - React-based image sharing platform
 // veeti "walther" haapsamo 2016
 
+var requireAuth = true;
+/* In production, authentication is required for posting.
+However, as authentication is built with an external service,
+we need a way to disable auth so that the project can be tested
+by just cloning the repository and running the server locally :)
+
+Don't worry though - the actual authentication requirement is server-side.
+This only sets some handy default user id's and tokens, not whether the
+server accepts HTTP POST to the site.
+*/
+
 // a Gallery is a page with its own url; a post submitted by a user.
 // Gallery has a title, one or more images with captions, and a comment box
 var Gallery = React.createClass({
@@ -306,34 +317,49 @@ var Main = React.createClass({
     return {profile: null};
   },
   componentWillMount: function() {
-    this.lock = new Auth0Lock('N1zyz6FaQspe9Z0bX9QrUPMbp5rWEidR', 'reactgifs.eu.auth0.com');
-    this.setState({idToken: this.getIdToken(), url: this.getPrevUrl()});
-    this.clearUrlHash();
+    if (requireAuth) {
+      this.lock = new Auth0Lock('N1zyz6FaQspe9Z0bX9QrUPMbp5rWEidR', 'reactgifs.eu.auth0.com');
+      this.setState({idToken: this.getIdToken(), url: this.getPrevUrl()});
+      this.clearUrlHash();
+    } else {
+      this.lock = null;
+      this.setState({idToken: "testuser.local"});
+    }
   },
   componentDidMount: function() {
-    this.lock.getProfile(this.state.idToken, function (err, profile) {
-      if (err) {
-        console.log("Error loading the Profile", err);
-        return;
-      }
-      this.setState({profile: profile});
-      console.log("Profile: " + profile)
-    }.bind(this));
+    if (requireAuth) {
+      this.lock.getProfile(this.state.idToken, function (err, profile) {
+        if (err) {
+          console.log("Error loading the Profile", err);
+          return;
+        }
+        this.setState({profile: profile});
+        console.log("Profile: " + JSON.stringify(profile))
+      }.bind(this));
+    } else {
+      var profile = {"nickname": "testuser.local"}
+      this.setState({profile: profile})
+      console.log("Profile: " + JSON.stringify(profile))
+    }
   },
   getIdToken: function() {
-    var idToken = localStorage.getItem('userToken');
-    var authHash = this.lock.parseHash(window.location.hash);
-    if (!idToken && authHash) {
-      if (authHash.id_token) {
-        idToken = authHash.id_token
-        localStorage.setItem('userToken', authHash.id_token);
+    if (requireAuth) {
+      var idToken = localStorage.getItem('userToken');
+      var authHash = this.lock.parseHash(window.location.hash);
+      if (!idToken && authHash) {
+        if (authHash.id_token) {
+          idToken = authHash.id_token
+          localStorage.setItem('userToken', authHash.id_token);
+        }
+        if (authHash.error) {
+          console.log("Error signing in", authHash);
+          return null;
+        }
       }
-      if (authHash.error) {
-        console.log("Error signing in", authHash);
-        return null;
-      }
+      return idToken;
+    } else {
+      return "testuser.local.idToken"
     }
-    return idToken;
   },
   getPrevUrl: function() {
     var authHash = this.lock.parseHash(window.location.hash);

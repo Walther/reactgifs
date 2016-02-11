@@ -11,16 +11,18 @@ Looks great on desktop browsers:
 And on mobile too:
 ![Index page on mobile](screenshots/reactgifs-mobile.jpg)
 
-
-There's also support for user login via some common providers:
+In the production version, there's also support for user login via some common providers:
 
 ![Index page, not logged in](screenshots/2016-02-11-132620_1920x1080_scrot.png)
 ![Index page, login box](screenshots/2016-02-11-132625_1920x1080_scrot.png)
 
 ## Usage
 
-- `npm install`
-- `node server.js`
+- Clone this repository
+- `npm install` to install all the dependencies
+- Change `prod = true` to `prod = false` in `server.js` to disable auth for local testing
+- Change `requireAuth = true` to `requireAuth = false` in `static/reactgifs.js` to set up a default local test user
+- Run `node server.js`
 - Open http://localhost:8080/ in your favourite browser
 
 
@@ -29,6 +31,7 @@ There's also support for user login via some common providers:
 - [x] Support for uploading an image post with single image
 - [x] Support for separate post metadata and image storage
 - [x] Support for posting comments on an image post
+- [x] Support for easy local testing by disabling auth with a variable
 - [ ] Ensure the API is RESTful
 - [ ] Support for submitting multiple images within same post
 - [ ] Support for comments of comments; comment-tree
