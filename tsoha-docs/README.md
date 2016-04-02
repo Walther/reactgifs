@@ -46,7 +46,7 @@ This folder contains documentation required for a course at University of Helsin
 
 **Usecase diagram**
 
-![reactgifs-usecase.svg](reactgifs-usecase.svg)
+![reactgifs-usecase.png](reactgifs-usecase.png)
 
 **Usecases**
 
