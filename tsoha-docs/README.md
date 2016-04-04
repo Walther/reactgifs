@@ -55,3 +55,8 @@ This folder contains documentation required for a course at University of Helsin
 - Commenting on photos: A registered user can submit comments on images
 - Favouriting photos: A registered user can favourite images to find them easily in their favourite list
 - Up/downvoting: A registered user can vote on images and comments to indicate their value
+
+## Example pages
+
+- [Front page](http://reactgifs.walther.guru/)
+- [Example gif](http://reactgifs.walther.guru/4Jge08gqg)
