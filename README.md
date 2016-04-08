@@ -1,4 +1,5 @@
-[![Build Status](https://travis-ci.org/Walther/reactgifs.svg?branch=master)](https://travis-ci.org/Walther/reactgifs)[![Coverage Status](https://coveralls.io/repos/github/Walther/reactgifs/badge.svg?branch=master)](https://coveralls.io/github/Walther/reactgifs?branch=master)
+[![Build Status](https://travis-ci.org/Walther/reactgifs.svg?branch=master)](https://travis-ci.org/Walther/reactgifs)
+[![Coverage Status](https://coveralls.io/repos/github/Walther/reactgifs/badge.svg?branch=master)](https://coveralls.io/github/Walther/reactgifs?branch=master)
 
 # ReactGIFS
 
