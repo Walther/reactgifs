@@ -13,7 +13,7 @@ var readChunk  = require('read-chunk');
 
 // inits
 var app        = express();
-var prod       = true; // "production" has a .env file with auth0 details and custom port
+var prod       = false; // "production" has a .env file with auth0 details and custom port
 
 if (prod) {
   dotenv.load();

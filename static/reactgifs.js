@@ -1,7 +1,7 @@
 // ReactGIFs - React-based image sharing platform
 // veeti "walther" haapsamo 2016
 
-var requireAuth = true;
+var requireAuth = false;
 /* In production, authentication is required for posting.
 However, as authentication is built with an external service,
 we need a way to disable auth so that the project can be tested
