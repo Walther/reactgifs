@@ -26,5 +26,9 @@
     "multiparty": "^4.1.2",
     "read-chunk": "^1.0.1",
     "shortid": "^2.2.4"
+  },
+  "devDependencies": {
+    "coveralls": "^2.11.9",
+    "istanbul": "^0.4.3"
   }
 }
